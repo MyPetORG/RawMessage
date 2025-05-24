@@ -87,6 +87,10 @@ public class RawMessage {
     );
   }
 
+  public @Nullable String getText(String text) {
+    return this.text;
+  }
+
   public RawMessage setText(String text) {
     this.text = text;
     return this;
@@ -129,6 +133,13 @@ public class RawMessage {
   public RawMessage clearStyle(MessageStyle style) {
     styleStates[style.ordinal()] = null;
     return this;
+  }
+
+  public RawMessage applyReset() {
+    for (MessageStyle messageStyle : MessageStyle.VALUES)
+      disableStyle(messageStyle);
+
+    return setColor(MessageColor.WHITE);
   }
 
   public RawMessage setClickAction(@Nullable ClickAction action) {

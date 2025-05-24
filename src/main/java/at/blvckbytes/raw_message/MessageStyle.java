@@ -15,10 +15,13 @@ public enum MessageStyle {
   public static final List<MessageStyle> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
 
   private static final Map<String, MessageStyle> messageStyleByName = new HashMap<>();
+  private static final Map<Character, MessageStyle> messageStyleByChar = new HashMap<>();
 
   static {
-    for (MessageStyle style : VALUES)
+    for (MessageStyle style : VALUES) {
       messageStyleByName.put(style.value, style);
+      messageStyleByChar.put(style.legacyCharacter, style);
+    }
   }
 
   public final String value;
@@ -31,5 +34,9 @@ public enum MessageStyle {
 
   public static @Nullable MessageStyle fromName(String name) {
     return messageStyleByName.get(name.toLowerCase());
+  }
+
+  public static @Nullable MessageStyle fromLegacyCharacter(char c) {
+    return messageStyleByChar.get(c);
   }
 }

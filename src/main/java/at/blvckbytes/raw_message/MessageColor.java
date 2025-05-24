@@ -31,10 +31,13 @@ public class MessageColor {
   };
 
   private static final Map<String, MessageColor> legacyColorByName = new HashMap<>();
+  private static final Map<Character, MessageColor> legacyColorByChar = new HashMap<>();
 
   static {
-    for (MessageColor color : LEGACY_COLORS)
+    for (MessageColor color : LEGACY_COLORS) {
       legacyColorByName.put(color.value, color);
+      legacyColorByChar.put(color.legacyCharacter, color);
+    }
   }
 
   public final String value;
@@ -98,5 +101,9 @@ public class MessageColor {
 
   public static @Nullable MessageColor fromName(String name) {
     return legacyColorByName.get(name.toLowerCase());
+  }
+
+  public static @Nullable MessageColor fromLegacyCharacter(char c) {
+    return legacyColorByChar.get(c);
   }
 }
