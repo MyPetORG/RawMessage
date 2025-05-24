@@ -2,6 +2,7 @@ package at.blvckbytes.raw_message.hover;
 
 import at.blvckbytes.raw_message.ServerVersion;
 import at.blvckbytes.raw_message.RawMessage;
+import at.blvckbytes.raw_message.content.TextContent;
 import at.blvckbytes.raw_message.json.JsonArray;
 import at.blvckbytes.raw_message.json.JsonObject;
 import at.blvckbytes.raw_message.json.JsonSerializer;
@@ -35,7 +36,7 @@ public class ShowItemAction extends HoverAction {
   }
 
   public ShowItemAction setName(String name) {
-    this.name = new RawMessage(name).clearImplicitStyling();
+    this.name = new RawMessage(new TextContent(name)).clearImplicitStyling();
     return this;
   }
 
@@ -48,7 +49,7 @@ public class ShowItemAction extends HoverAction {
     this.lore.clear();
 
     for (String line : lore)
-      this.lore.add(new RawMessage(line).clearImplicitStyling());
+      this.lore.add(new RawMessage(new TextContent(line)).clearImplicitStyling());
 
     return this;
   }
@@ -59,7 +60,7 @@ public class ShowItemAction extends HoverAction {
   }
 
   public ShowItemAction addLoreLine(String line) {
-    this.lore.add(new RawMessage(line).clearImplicitStyling());
+    this.lore.add(new RawMessage(new TextContent(line)).clearImplicitStyling());
     return this;
   }
 

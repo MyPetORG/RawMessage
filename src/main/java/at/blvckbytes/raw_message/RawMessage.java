@@ -1,6 +1,8 @@
 package at.blvckbytes.raw_message;
 
 import at.blvckbytes.raw_message.click.ClickAction;
+import at.blvckbytes.raw_message.content.MessageContent;
+import at.blvckbytes.raw_message.content.TextContent;
 import at.blvckbytes.raw_message.hover.HoverAction;
 import at.blvckbytes.raw_message.json.JsonArray;
 import at.blvckbytes.raw_message.json.JsonObject;
@@ -12,13 +14,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO: insertion, font
 public class RawMessage {
 
   private static final JsonSerializer SERIALIZER_JSON = new JsonSerializer(false);
 
-  private String text;
-  private @Nullable String translate;
-  private @Nullable List<RawMessage> translateWith;
+  private @Nullable MessageContent content;
   private @Nullable MessageColor color;
   private final Boolean[] styleStates;
   private @Nullable ClickAction clickAction;
@@ -30,20 +31,14 @@ public class RawMessage {
     this(null);
   }
 
-  public RawMessage(Object value) {
-    this(String.valueOf(value));
-  }
-
-  public RawMessage(@Nullable String text) {
+  public RawMessage(@Nullable MessageContent content) {
     this.styleStates = new Boolean[MessageStyle.VALUES.size()];
     this.extraMessages = new ArrayList<>();
-    this.text = text == null ? "" : text;
+    this.content = content;
   }
 
   private RawMessage(
-    String text,
-    @Nullable String translate,
-    @Nullable List<RawMessage> translateWith,
+    @Nullable MessageContent content,
     @Nullable MessageColor color,
     Boolean[] styleStates,
     @Nullable ClickAction clickAction,
@@ -51,15 +46,8 @@ public class RawMessage {
     List<RawMessage> extraMessages,
     boolean clearedImplicitStyling
   ) {
-    this.text = text;
-    this.translate = translate;
-
-    if (translateWith != null) {
-      this.translateWith = new ArrayList<>();
-
-      for (RawMessage item : translateWith)
-        this.translateWith.add(item.duplicate());
-    }
+    if (content != null)
+      this.content = content.duplicate();
 
     this.color = color;
 
@@ -82,28 +70,9 @@ public class RawMessage {
 
   public RawMessage duplicate() {
     return new RawMessage(
-      this.text, this.translate, this.translateWith, this.color, this.styleStates, this.clickAction,
+      this.content, this.color, this.styleStates, this.clickAction,
       this.hoverAction, this.extraMessages, this.clearedImplicitStyling
     );
-  }
-
-  public @Nullable String getText(String text) {
-    return this.text;
-  }
-
-  public RawMessage setText(String text) {
-    this.text = text;
-    return this;
-  }
-
-  public RawMessage setTranslate(String key, @Nullable List<RawMessage> translateWith) {
-    this.translate = key;
-    this.translateWith = translateWith;
-    return this;
-  }
-
-  public RawMessage setTranslate(String key) {
-    return setTranslate(key, null);
   }
 
   public RawMessage setColor(@Nullable MessageColor color) {
@@ -158,7 +127,7 @@ public class RawMessage {
   }
 
   public RawMessage addExtra(String text) {
-    this.extraMessages.add(new RawMessage(text));
+    this.extraMessages.add(new RawMessage(new TextContent(text)));
     return this;
   }
 
@@ -168,24 +137,6 @@ public class RawMessage {
 
   public String toJsonString() {
     return toJsonString(ServerVersion.CURRENT);
-  }
-
-  private void appendTranslationOrText(JsonObject object, ServerVersion version) {
-    if (translate != null) {
-      object.add("translate", translate);
-
-      if (translateWith != null) {
-        JsonArray translateWithArray = new JsonArray();
-
-        for (RawMessage value : translateWith)
-          translateWithArray.add(value.toJsonObject(version));
-
-        object.add("with", translateWithArray);
-      }
-    }
-
-    else
-      object.add("text", text);
   }
 
   private void appendStyleAndColor(JsonObject object) {
@@ -216,7 +167,9 @@ public class RawMessage {
   public JsonObject toJsonObject(ServerVersion version) {
     JsonObject result = new JsonObject();
 
-    appendTranslationOrText(result, version);
+    if (content != null)
+      content.appendSelf(result, version);
+
     appendStyleAndColor(result);
     appendExtraMessages(result, version);
 
@@ -234,7 +187,7 @@ public class RawMessage {
   }
 
   public String toLegacyText() {
-    if (text == null || text.isEmpty())
+    if (content == null)
       return "";
 
     StringBuilder result = new StringBuilder();
@@ -254,7 +207,7 @@ public class RawMessage {
       result.append('§').append(messageStyle.legacyCharacter);
     }
 
-    result.append(text);
+    result.append(content.toLegacyText());
 
     for (RawMessage extraMessage : extraMessages)
       result.append(extraMessage.toLegacyText());
