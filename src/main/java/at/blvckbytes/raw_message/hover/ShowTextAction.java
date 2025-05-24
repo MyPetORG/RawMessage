@@ -6,7 +6,7 @@ import at.blvckbytes.raw_message.json.JsonObject;
 
 public class ShowTextAction extends HoverAction {
 
-  private final RawMessage text;
+  public RawMessage text;
 
   public ShowTextAction(RawMessage text) {
     this.text = text;

@@ -5,7 +5,7 @@ import at.blvckbytes.raw_message.json.JsonObject;
 
 public class OpenFileAction extends ClickAction {
 
-  private final String path;
+  public String path;
 
   public OpenFileAction(String path) {
     this.path = path;

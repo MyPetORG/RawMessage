@@ -16,9 +16,9 @@ public class ShowItemAction extends HoverAction {
   private static final JsonSerializer SERIALIZER_JSON = new JsonSerializer(false);
   private static final JsonSerializer SERIALIZER_SNBT = new JsonSerializer(true);
 
-  private final Material material;
-  private @Nullable RawMessage name;
-  private List<RawMessage> lore;
+  public Material material;
+  public @Nullable RawMessage name;
+  public List<RawMessage> lore;
 
   public ShowItemAction() {
     this(Material.STONE);

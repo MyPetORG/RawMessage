@@ -5,7 +5,7 @@ import at.blvckbytes.raw_message.json.JsonObject;
 
 public class OpenUrlAction extends ClickAction {
 
-  private final String url;
+  public String url;
 
   public OpenUrlAction(String url) {
     this.url = url;

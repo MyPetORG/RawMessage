@@ -5,7 +5,7 @@ import at.blvckbytes.raw_message.json.JsonObject;
 
 public class CopyToClipboardAction extends ClickAction {
 
-  private final String value;
+  public String value;
 
   public CopyToClipboardAction(String value) {
     this.value = value;

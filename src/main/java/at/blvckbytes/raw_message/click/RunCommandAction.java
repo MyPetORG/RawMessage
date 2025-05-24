@@ -5,7 +5,7 @@ import at.blvckbytes.raw_message.json.JsonObject;
 
 public class RunCommandAction extends ClickAction {
 
-  private final String command;
+  public String command;
 
   public RunCommandAction(String command) {
     this.command = command;

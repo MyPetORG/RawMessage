@@ -15,9 +15,9 @@ public class ShowEntityAction extends HoverAction {
 
   private static final JsonSerializer SERIALIZER_JSON = new JsonSerializer(false);
 
-  private final UUID id;
-  private final EntityType type;
-  private @Nullable RawMessage name;
+  public UUID id;
+  public EntityType type;
+  public @Nullable RawMessage name;
 
   public ShowEntityAction(EntityType type, UUID id) {
     this.type = type;
