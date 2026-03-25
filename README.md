@@ -14,7 +14,7 @@ In order to avoid the friction cloning, building from source and installing into
 <dependency>
     <groupId>at.blvckbytes</groupId>
     <artifactId>RawMessage</artifactId>
-    <version>0.2</version>
+    <version>0.3</version>
 </dependency>
 ```
 

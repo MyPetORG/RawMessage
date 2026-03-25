@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public class ServerVersion implements Comparable<ServerVersion> {
 
-  private static final Pattern MINECRAFT_VERSION_MATCHER = Pattern.compile("\\(MC: (\\d\\.\\d+(?:\\.\\d+)?)");
+  private static final Pattern MINECRAFT_VERSION_MATCHER = Pattern.compile("\\(MC: (\\d+\\.\\d+(?:\\.\\d+)?)");
 
   public static final ServerVersion CURRENT = parseCurrent();
 
